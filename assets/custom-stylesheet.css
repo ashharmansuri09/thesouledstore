@@ -1,0 +1,10 @@
+
+
+
+@media screen and (min-width: 1900px) {
+    .page-width-full{
+        max-width: 1900px;
+        margin: 0 auto;
+        padding: 0 !important;
+}
+}

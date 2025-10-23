@@ -1,0 +1,161 @@
+
+{% style %}
+  .collection-tabs-wrapper {
+  position: relative;
+  z-index: 10;
+}
+
+.collection-tabs-header {
+  position: sticky;
+  top: var(--header-height, 220px); /* Adjust based on Dawn header height */
+  background: #fff;
+  z-index: 1;
+  padding:10px 0;
+}
+.custom-tab-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+}
+.product-card__image{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+}
+.product-card__image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+button.tab-button {
+    font-size: 12px;
+    letter-spacing:1px;
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: none;
+}
+{% endstyle %}
+<div class="collection-tabs-wrapper page-width" style="position: sticky; top: 70px; z-index: 1;">
+    <div class="collection-tabs-header">
+      {% for block in section.blocks %}
+        {% assign collection = block.settings.collection %}
+        <button class="tab-button" data-tab="{{ block.id }}">{{ collection.title }}</button>
+      {% endfor %}
+    </div>
+  
+    <div class="collection-tabs-content">
+      {% for block in section.blocks %}
+        {% assign collection = block.settings.collection %}
+        <div class="tab-content" data-tab="{{ block.id }}">
+          <div class="custom-tab-grid">
+            {% for product in collection.products %}
+                {% render 'custom-card-product',product:product %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% schema %}
+  {
+    "name": "Collection Tabs",
+    "settings": [],
+    "blocks": [
+      {
+        "type": "collection_tab",
+        "name": "Collection Tab",
+        "settings": [
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          }
+        ]
+      }
+    ],
+    "max_blocks": 6,
+    "presets": [
+      {
+        "name": "Collection Tabs"
+      }
+    ]
+  }
+  {% endschema %}
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+      
+        buttons.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
+      
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+      
+            contents.forEach(c => {
+              c.style.display = c.dataset.tab === tabId ? 'block' : 'none';
+            });
+          });
+        });
+      
+        // Initialize first tab
+        if (buttons.length > 0) {
+          buttons[0].click();
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const header = document.querySelector('.header-wrapper');
+        const tabsWrapper = document.querySelector('.collection-tabs-wrapper');
+        const tabsHeader = tabsWrapper?.querySelector('.collection-tabs-header');
+      
+        if (!header || !tabsWrapper || !tabsHeader) return;
+      
+        const headerHeight = header.offsetHeight;
+        const stickyOffset = headerHeight + 10; // 10px spacing
+      
+        const sentinel = document.createElement('div');
+        sentinel.className = 'tabs-end-sentinel';
+        tabsWrapper.appendChild(sentinel);
+      
+        let isSticky = false;
+      
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            const headerBottom = header.getBoundingClientRect().bottom;
+            const tabsTop = tabsWrapper.getBoundingClientRect().top;
+      
+            if (tabsTop - headerBottom <= 10 && entry.isIntersecting) {
+              tabsWrapper.classList.add('is-sticky');
+              isSticky = true;
+            } else {
+              tabsWrapper.classList.remove('is-sticky');
+              isSticky = false;
+            }
+          },
+          { threshold: [0] }
+        );
+      
+        const releaseObserver = new IntersectionObserver(
+          ([entry]) => {
+            if (!entry.isIntersecting && isSticky) {
+              tabsWrapper.classList.remove('is-sticky');
+              isSticky = false;
+            }
+          },
+          { rootMargin: '0px 0px -100% 0px' }
+        );
+      
+        observer.observe(tabsWrapper);
+        releaseObserver.observe(sentinel);
+      });
+      
+      
+    </script>
+    

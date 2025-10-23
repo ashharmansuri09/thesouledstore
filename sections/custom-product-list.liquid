@@ -1,0 +1,178 @@
+{% comment %}
+🧩 Product List Slider Section
+- Shows manually selected products (via product_list setting)
+- 4 per view on desktop, 2 on tablet, 1 on mobile
+- Dynamic Swiper initialization per section
+{% endcomment %}
+
+{% style %}
+#collection-slider-{{ section.id }} {
+  position: relative;
+}
+#collection-slider-{{ section.id }} .swiper-button-prev,
+#collection-slider-{{ section.id }} .swiper-button-next {
+  display: block !important;
+}
+{% endstyle %}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+/>
+
+{% liquid
+  assign title = section.settings.title
+  assign product_list = section.settings.product_list
+  assign view_all = section.settings.show_view_all_button
+%}
+
+<section id="collection-slider-{{ section.id }}" class="collection-slider">
+  <div class="page-width">
+    {% if title != blank %}
+      <h2 class="collection-slider__title">{{ title }}</h2>
+    {% endif %}
+
+
+      <div class="swiper collectionSwiper-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {% for product in product_list %}
+            <div class="swiper-slide">
+              {% render 'custom-card-product',product:product %}
+            </div>
+          {% endfor %}
+        </div>
+        {% if product_list.size > 4 %}
+        <!-- Navigation -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+        {% endif %}
+      </div>
+  </div>
+
+</section>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+<!-- Initialize Swiper -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new Swiper(".collectionSwiper-{{ section.id }}", {
+      slidesPerView: 4,
+      spaceBetween: 20,
+      loop: false,
+      navigation: {
+        nextEl: "#collection-slider-{{ section.id }} .swiper-button-next",
+        prevEl: "#collection-slider-{{ section.id }} .swiper-button-prev",
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: 1.2,
+          spaceBetween: 10,
+        },
+        768: {
+          slidesPerView: 2.2,
+          spaceBetween: 15,
+        },
+        1024: {
+          slidesPerView: 4,
+          spaceBetween: 20,
+        },
+      },
+    });
+  });
+</script>
+
+<style>
+  #collection-slider-{{ section.id }} .collection-slider {
+    padding: 50px 0;
+  }
+
+  #collection-slider-{{ section.id }} .collection-slider__title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  #collection-slider-{{ section.id }} .product-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fff;
+    border-radius: 12px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+  }
+
+  #collection-slider-{{ section.id }} .product-card:hover {
+    transform: translateY(-4px);
+  }
+
+  #collection-slider-{{ section.id }} .product-card__image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Adjust ratio as needed */
+  }
+
+  #collection-slider-{{ section.id }} .product-card__image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  #collection-slider-{{ section.id }} .product-card__info {
+    flex-grow: 1;
+    padding: 12px 10px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #collection-slider-{{ section.id }} .product-card__title {
+    font-size: 1rem;
+    margin: 5px 0;
+  }
+
+  #collection-slider-{{ section.id }} .product-card__price {
+    font-weight: bold;
+    color: #333;
+  }
+
+  #collection-slider-{{ section.id }} .swiper-pagination-bullet {
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  #collection-slider-{{ section.id }} .swiper-pagination-bullet-active {
+    background: #000;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Product List Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product List Slider"
+    }
+  ]
+}
+{% endschema %}

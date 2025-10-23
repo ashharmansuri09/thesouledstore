@@ -1,0 +1,29 @@
+<a href="{{ product.url }}" class="product-card">
+    <div class="product-card__image">
+      {% if product.featured_image %}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          alt="{{ product.title | escape }}"
+          loading="lazy"
+          width=""
+          height=""
+        >
+      {% endif %}
+    </div>
+    <div class="product-card__info">
+      {% assign color_option = '' %}
+      {% for option in product.options_with_values %}
+        {% if option.name == 'Color' and option.values.size > 0 %}
+          {% assign color_option = option.values[0] %}
+        {% endif %}
+      {% endfor %}
+      <h3 class="product-card__title">
+        {{ product.title -}}
+        {%- if color_option != '' %} : {{ color_option }}{% endif %}
+      </h3>
+
+      <p class="product-card__price">
+        {{ product.price | money }}
+      </p>
+    </div>
+  </a>
