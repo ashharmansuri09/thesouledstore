@@ -1,5 +1,5 @@
-<a href="{{ product.url }}" class="product-card">
-    <div class="product-card__image">
+<a href="{{ product.url }}" class="custom-product-card">
+    <div class="custom-product-card__image">
       {% if product.featured_image %}
         <img
           src="{{ product.featured_image | image_url: width: 600 }}"
@@ -21,9 +21,9 @@
         {{ product.title -}}
         {%- if color_option != '' %} : {{ color_option }}{% endif %}
       </h3>
-
-      <p class="product-card__price">
-        {{ product.price | money }}
-      </p>
+     <h4 class="product-cart__category">{{ product.collections.first.title }}</h4>
+      <span class="product-card__price">
+        {{ product.price | money_with_currency }} 
+      </span>
     </div>
   </a>

@@ -1,0 +1,104 @@
+{% comment %}
+🧩 Collection List Grid Section
+- Displays selected collections in a responsive grid
+- Desktop: 4 columns | Tablet: 2 columns | Mobile: 1 column
+{% endcomment %}
+ {% style %}
+   .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+ {% endstyle %}
+{% assign collection_list = section.settings.collection_list %}
+{% assign title = section.settings.inline %}
+{% assign show_title = section.settings.show_collection_title %}
+<section class="collection-list-section section-{{ section.id }}-padding">
+    <div class="page-width">
+        <h2 class="text_center">{{ title }}</h2>
+      <div class="grid-wrapper category-list-wrapper">
+       
+          {% for collection_list in collection_list %}
+            <a href="{{ collection_list.url }}" class="grid-item" title="{{ collection_list.title }}">
+          
+                <div class="collection-image">
+                    {% if collection_list.featured_image != blank %}
+                        {% assign collectin_image = collection_list.featured_image %}
+                    {% else %}
+                        {% assign collectin_image = collection_list.products.first.image %}
+                    {% endif %}
+                  <img src="{{ collectin_image | image_url:width:300 }}" alt="{{ collection_list.title }}" loading="lazy" width="" height="">
+        
+                </div>
+   {% if show_title %}
+              <h3 class="custom-collection-title">{{ collection_list.title }}</h3>
+   {%  endif %}
+            </a>
+        {% endfor %}
+
+      </div>
+    </div>
+  </section>
+    
+  {% schema %}
+  {
+    "name": "Collection List Grid",
+    "settings": [
+        {
+            "type": "inline_richtext",
+            "id": "inline",
+            "default": "Title",
+            "label": "Title"
+          },
+        {
+            "type": "collection_list",
+            "id": "collection_list",
+            "label": "Collections",
+            "limit": 16
+        },
+        {
+          "type": "checkbox",
+          "id": "show_collection_title",
+          "label": "Show Collection Title",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "t:sections.all.padding.section_padding_heading"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_top",
+          "default": 36
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "min": 0,
+          "max": 100,
+          "step": 4,
+          "unit": "px",
+          "label": "t:sections.all.padding.padding_bottom",
+          "default": 36
+        }
+    ],
+    "presets": [
+      {
+        "name": "Collection List Grid",
+        "category": "Collection"
+      }
+    ]
+  }
+  {% endschema %}
+  

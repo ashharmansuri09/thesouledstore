@@ -17,20 +17,7 @@
     grid-template-columns:repeat(4,1fr);
     gap:15px;
 }
-.product-card__image{
-    position: relative;
-    width: 100%;
-    aspect-ratio: 3 / 4;
-}
-.product-card__image img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
+
 button.tab-button {
     font-size: 12px;
     letter-spacing:1px;
@@ -38,14 +25,30 @@ button.tab-button {
     border-radius: 50px;
     border: none;
 }
+button.tab-button.active{
+  background:#000;
+  color:#fff;
+}
+div.section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    div.section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
 {% endstyle %}
-<div class="collection-tabs-wrapper page-width" style="position: sticky; top: 70px; z-index: 1;">
-    <div class="collection-tabs-header">
+<div class="collection-tabs-wrapper  section-{{section.id }}-padding" style="position: sticky; top: 70px; z-index: 1;">
+<div class="page-width">
+  <div class="collection-tabs-header">
       {% for block in section.blocks %}
         {% assign collection = block.settings.collection %}
         <button class="tab-button" data-tab="{{ block.id }}">{{ collection.title }}</button>
       {% endfor %}
-    </div>
+  </div>
   
     <div class="collection-tabs-content">
       {% for block in section.blocks %}
@@ -60,10 +63,36 @@ button.tab-button {
       {% endfor %}
     </div>
   </div>
+  </div>
   {% schema %}
   {
     "name": "Collection Tabs",
-    "settings": [],
+    "settings": [
+      {
+        "type": "header",
+        "content": "t:sections.all.padding.section_padding_heading"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_top",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "t:sections.all.padding.padding_bottom",
+        "default": 36
+      }
+    ],
     "blocks": [
       {
         "type": "collection_tab",
@@ -157,5 +186,5 @@ button.tab-button {
       });
       
       
-    </script>
+</script>
     

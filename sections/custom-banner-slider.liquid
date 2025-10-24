@@ -8,10 +8,6 @@
      #banner-slider-{{ section.id }}{
       position: relative;
      }
-     #banner-slider-{{ section.id }} .swiper-button-prev,
-     #banner-slider-{{ section.id }} .swiper-button-next {
-      display: block!important;
-  }
   .banner-slider-link{
     display: block;
   }
@@ -25,7 +21,7 @@
 <section id="banner-slider-{{ section.id }}" class="banner-slider">
   <div class="page-width-full">
     {% if main_title != blank %}
-      <h2 class="main-title">{{ main_title }}</h2>
+      <h2 class="main-title text_center">{{ main_title }}</h2>
     {% endif %}
     <div class="swiper mySwiper-{{ section.id }}">
       <div class="swiper-wrapper">
@@ -135,16 +131,7 @@
     opacity: 1;
   }
 
-  #banner-slider-{{ section.id }} .swiper-pagination-bullet-active {
-    background: #fff;
-  }
 
-  /* Optional: Navigation arrow visibility */
-  #banner-slider-{{ section.id }} .swiper-button-prev,
-  #banner-slider-{{ section.id }} .swiper-button-next {
-    color: white;
-    text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-  }
 </style>
 
 {% schema %}
