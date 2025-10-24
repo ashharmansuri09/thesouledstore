@@ -1,4 +1,6 @@
-
+.critical-flex{
+  display: flex;
+}
 .text_center{
     text-align: center!important;
 }
@@ -12,6 +14,7 @@ div.swiper-button-next:after, div.swiper-button-prev:after {
     color: white;
     text-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
     display: block!important;
+    z-index: 10;
   }
 
   .custom-product-card {
@@ -41,6 +44,7 @@ div.swiper-button-next:after, div.swiper-button-prev:after {
       aspect-ratio: 3 / 4; /* 600x400 proportion */
     }
 
+
     .custom-product-card__image img {
       position: absolute;
       top: 0;
@@ -50,6 +54,9 @@ div.swiper-button-next:after, div.swiper-button-prev:after {
       object-fit: cover;
       display: block;
     }
+    .custom-card__image img {
+      width: 100%;
+  }
       .product-card__info > * {
         margin: 0;
     }
