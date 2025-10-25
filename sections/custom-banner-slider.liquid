@@ -15,13 +15,13 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 {% liquid
-    assign main_title = section.settings.main_title
+    assign main_title = section.settings.title
 %}
 
 <section id="banner-slider-{{ section.id }}" class="banner-slider">
   <div class="page-width-full">
     {% if main_title != blank %}
-      <h2 class="main-title text_center">{{ main_title }}</h2>
+      <h2 class="main-title text_center {{ section.settings.heading_size }}">{{ main_title }}</h2>
     {% endif %}
     <div class="swiper mySwiper-{{ section.id }}">
       <div class="swiper-wrapper">
@@ -139,11 +139,40 @@
   "name": "Custom Banner Slider",
   "settings": [
     {
-     "type":"text",
-     "id":"main_title",
+     
+      "type": "inline_richtext",
+      "id": "title",
      "label":"Main Title",
      "default":"Style by nature"
-    }
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
   ],
   "blocks": [
     {

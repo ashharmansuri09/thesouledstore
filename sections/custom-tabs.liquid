@@ -24,6 +24,7 @@ button.tab-button {
     padding: 8px 16px;
     border-radius: 50px;
     border: none;
+    cursor:pointer;
 }
 button.tab-button.active{
   background:#000;
@@ -33,6 +34,14 @@ div.section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
     padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
+  .tab-loader img {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
   @media screen and (min-width: 750px) {
     div.section-{{ section.id }}-padding {
@@ -48,6 +57,9 @@ div.section-{{ section.id }}-padding {
         {% assign collection = block.settings.collection %}
         <button class="tab-button" data-tab="{{ block.id }}">{{ collection.title }}</button>
       {% endfor %}
+  </div>
+  <div class="tab-loader" style="display:none; text-align:center; padding:20px;">
+    <img src="https://cdn.shopify.com/s/files/1/0969/2466/4122/files/loader.gif?v=1761385495" alt="Loading..." width="50" height="50">
   </div>
   
     <div class="collection-tabs-content">
@@ -115,29 +127,43 @@ div.section-{{ section.id }}-padding {
   }
   {% endschema %}
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
+  <script>                                                       
+      document.addEventListener('DOMContentLoaded', function () {
         const buttons = document.querySelectorAll('.tab-button');
         const contents = document.querySelectorAll('.tab-content');
-      
+        const loader = document.querySelector('.tab-loader');
+    
         buttons.forEach(btn => {
           btn.addEventListener('click', () => {
             const tabId = btn.dataset.tab;
-      
+    
+            // Reset all buttons
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-      
-            contents.forEach(c => {
-              c.style.display = c.dataset.tab === tabId ? 'block' : 'none';
-            });
+    
+            // Hide all tab contents
+            contents.forEach(c => c.style.display = 'none');
+    
+            // Show loader
+            loader.style.display = 'block';
+    
+            // Delay showing tab content
+            setTimeout(() => {
+              loader.style.display = 'none';
+              const targetContent = document.querySelector(`.tab-content[data-tab="${tabId}"]`);
+              if (targetContent) {
+                targetContent.style.display = 'block';
+              }
+            }, 1000); // 5 seconds
           });
         });
-      
+    
         // Initialize first tab
         if (buttons.length > 0) {
           buttons[0].click();
         }
       });
+    
 
       document.addEventListener('DOMContentLoaded', () => {
         const header = document.querySelector('.header-wrapper');

@@ -29,30 +29,28 @@
   assign collection = section.settings.collection
   assign view_all = section.settings.show_view_all_button
 %}
-<section id="collection-slider-{{ section.id }} " class="collection-slider section-{{section.id }}-padding">
+<section id="collection-slider-{{ section.id }}" class="collection-slider section-{{section.id }}-padding">
   <div class="page-width">
     {% if title != blank %}
-      <h2 class="collection-slider__title text_center">{{ section.settings.title }}</h2>
+      <h2 class="collection-slider__title text_center {{ section.settings.heading_size }}">{{ section.settings.title }}</h2>
     {% endif %}
 
-    {% if collection.products.size > 0 %}
-      <div class="swiper collectionSwiper-{{ section.id }}">
-        <div class="swiper-wrapper">
-          {% for product in collection.products %}
-            <div class="swiper-slide">
-             {% render 'custom-card-product',product:product %}
-            </div>
-          {% endfor %}
-        </div>
-        {% if collection.products.size > 4 %}
-          <!-- Navigation -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        {% endif %}
+    <div class="swiper collectionSwiper-{{ section.id }} opacity-0">
+      <div class="swiper-wrapper">
+        {% for product in collection.products %}
+          <div class="swiper-slide">
+            {% render 'custom-card-product', product: product %}
+          </div>
+        {% endfor %}
       </div>
-    {% else %}
-      <p class="no-products">No products found in this collection.</p>
-    {% endif %}
+    
+      {% if collection.products.size > 4 %}
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      {% endif %}
+    </div>
+    
+
   </div>
   <div class="view-all-products-wrapper">
     {% if view_all %}
@@ -69,6 +67,7 @@
 <!-- Initialize Swiper -->
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const swiperContainer = document.querySelector('.collectionSwiper-{{ section.id }}');
     new Swiper('.collectionSwiper-{{ section.id }}', {
       slidesPerView:{{ section.settings.slides_per_view }},
       spaceBetween: 20,
@@ -91,6 +90,11 @@
           spaceBetween: 20,
         },
       },
+      on: {
+        init: function() {
+          swiperContainer.classList.remove('opacity-0');
+        }
+      }
     });
   });
 </script>
@@ -100,10 +104,38 @@
   "name": "Collection Feature Slider",
   "settings": [
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "title",
       "label": "Section Title",
       "default": "Featured Products"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h2",
+      "label": "t:sections.all.heading_size.label"
     },
     {
       "type": "select",

@@ -4,7 +4,12 @@
 .text_center{
     text-align: center!important;
 }
-
+.opacity-0{
+  opacity:0;
+}
+.header__icons {
+  gap: 15px;
+}
 div.swiper-button-next:after, div.swiper-button-prev:after {
     font-size: 30px;
 }
@@ -121,6 +126,17 @@ div.swiper-button-next:after, div.swiper-button-prev:after {
     display: none!important;
 }
   
+.custom-header-search-desktop .field:after{
+  box-shadow: none!important;
+}
+.custom-header-search-desktop input.search__input.field__input{
+  border:1px solid gray;
+  border-radius: 200px;
+}
+.custom-header-search-desktop input.search__input.field__input:focus{
+  box-shadow: none!important;
+  outline: 0;
+}
 @media screen and (min-width: 1900px) {
   .page-width-full{
       max-width: 1900px;
