@@ -29,6 +29,7 @@ button.tab-button {
 button.tab-button.active{
   background:#000;
   color:#fff;
+  
 }
 div.section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -48,6 +49,20 @@ div.section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top }}px;
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
+  }
+  @media screen and (max-width:600px){
+    button.tab-button {
+    min-width: 150px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+}
+.collection-tabs-header {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-align: x mandatory;
+    scroll-snap-type: x mandatory;
+}
   }
 {% endstyle %}
 <div class="collection-tabs-wrapper  section-{{section.id }}-padding" style="position: sticky; top: 70px; z-index: 1;">

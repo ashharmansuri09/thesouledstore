@@ -23,7 +23,12 @@
                 >
                   {{- link.title | escape -}}
                 </span>
-                {{- 'icon-caret.svg' | inline_asset_content -}}
+                {%- if link.child_active %}
+                  {{- 'icon-caret-active.svg' | inline_asset_content -}}
+                {% else %}
+                  {{- 'icon-caret.svg' | inline_asset_content -}}
+                {% endif %}
+               
               </summary>
               <ul
                 id="HeaderMenu-MenuList-{{ forloop.index }}"

@@ -10,6 +10,21 @@
 .header__icons {
   gap: 15px;
 }
+.header__menu-item span {
+  text-decoration: none;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+summary .icon-caret {
+  height: 0.9rem;
+}
+  span.header__active-menu-item,
+  svg.icon.icon-caret.header__active-menu-item {
+  color: #7008E7;
+}
+.header__submenu li .header__menu-item {
+  font-size: 18px;
+}
 div.swiper-button-next:after, div.swiper-button-prev:after {
     font-size: 30px;
 }
@@ -137,6 +152,18 @@ div.swiper-button-next:after, div.swiper-button-prev:after {
   box-shadow: none!important;
   outline: 0;
 }
+.brand-banner *{
+  margin:0;
+}
+.brand-top h3 {
+  font-size: 40px;
+  text-align: center;
+}
+h4.brand-text-color {
+  font-size: 48px;
+  text-align: center;
+  padding: 10px 0;
+}
 @media screen and (min-width: 1900px) {
   .page-width-full{
       max-width: 1900px;
@@ -149,6 +176,11 @@ div.swiper-button-next:after, div.swiper-button-prev:after {
 @media screen and (max-width: 1024px){
   header.header {
     grid-template-columns: 2fr 1fr 2fr;
+}
+}
+@media screen and (max-width:992px) {
+  .custom-tab-grid {
+    grid-template-columns: repeat(2,1fr)!important;
 }
 }
 @media screen and (max-width: 786px){
