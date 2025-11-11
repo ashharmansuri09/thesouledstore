@@ -1,0 +1,47 @@
+{{ 'component-custom-product.css' | asset_url | stylesheet_tag }}
+
+<section>
+    <div class="page-width">
+        <div class="custom-product-wrapper">
+              <div class="custom-product-images">
+                {% render 'product-medias',product %}
+              </div>
+              <div class="custom-product-infos">
+                {% assign color_option = '' %}
+                {% for option in product.options_with_values %}
+                  {% if option.name == 'Color' and option.values.size > 0 %}
+                    {% assign color_option = option.values[0] %}
+                  {% endif %}
+                {% endfor %}
+                <h1>{{ product.title }}<span> {%- if color_option != '' %}: {{ color_option }}{% endif %}</span></h1>
+                <span>{{  product.vendor }}</span>
+                <div class="custom-product-price-box">
+                    <span>{{ product.selected_or_first_available_variant.price | money }}</span>
+                </div>
+
+                {% unless product.has_only_default_variant %}
+                    {% form 'product',product %}
+                        <select name="id">
+                            {%  for variant in product.variants %}
+                                <option value="{{ variant.id }}" {% if variant = product.selected_or_first_available_variant %} selected {% endif %}>{{ variant.title }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit"  
+                            class="add-to-cart_btn"
+                            {% unless product.selected_or_first_available_variant.available %}
+                              disabled
+                            {% endunless %}>
+
+                            {%if product.selected_or_first_available_variant.available %}
+                                Add to Cart
+                            {% else %}
+                                Sold Out
+                            {% endif %}
+                        </button>
+                    {% endform %}
+                {% endunless %}
+              </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,28 @@
+.custom-product-wrapper {
+    display: flex;
+}
+.custom-product-images{
+    flex:1;
+}
+.custom-product-infos{
+    width: 45%;
+    padding: 15px 15px 15px 45px;
+}
+.custom-product-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+img.variant-images{
+    max-width: 100%;
+    width: 100%;
+}
+button.add-to-cart_btn {
+    border: none;
+    font-size: 16px;
+    padding: 7px 18px;
+    background: rgb(236, 61, 37);
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+}

@@ -1,0 +1,6 @@
+{% for variant in product.variants %}
+    {% assign variant_img = variant.metafields.custom.variant_images.value %}
+    {% for current_variant in variant_img %}
+       <img src="{{ current_variant | image_url:width:500 }}" width="500" height="" class="variant-images">
+    {% endfor %}
+{%  endfor %}
