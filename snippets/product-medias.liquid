@@ -1,6 +1,16 @@
-{% assign first_variant = product.variants.first %}
+{% comment %} {% assign first_variant = product.variants.first %}
 {% assign variant_img = first_variant.metafields.custom.variant_images.value %}
 
 {% for current_variant in variant_img %}
   <img src="{{ current_variant | image_url: width: 500 }}" width="500" height="" class="variant-images">
-{% endfor %}
+{% endfor %} {% endcomment %}
+
+
+{% assign variant_img = product.selected_or_first_available_variant.metafields.custom.variant_images.value %}
+
+{% if variant_img %}
+  {% for current_variant in variant_img %}
+    <img src="{{ current_variant | image_url: width: 500 }}" width="500" height="" class="variant-images">
+  {% endfor %}
+{% endif %}
+

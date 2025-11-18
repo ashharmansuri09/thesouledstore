@@ -1,5 +1,5 @@
 {{ 'component-custom-product.css' | asset_url | stylesheet_tag }}
-
+<script src="{{ 'custom-variant-picker.js' | asset_url }}"  defer="defer"> </script>
 <section>
     <div class="page-width">
         <div class="custom-product-wrapper">
@@ -13,20 +13,67 @@
                     {% assign color_option = option.values[0] %}
                   {% endif %}
                 {% endfor %}
-                <h1>{{ product.title }}<span> {%- if color_option != '' %}: {{ color_option }}{% endif %}</span></h1>
+                <h1>{{ product.title }}<span class="custom-variant-name"> {%- if color_option != '' %}: {{ color_option }}{% endif %}</span></h1>
                 <span>{{  product.vendor }}</span>
                 <div class="custom-product-price-box">
                     <span>{{ product.selected_or_first_available_variant.price | money }}</span>
                 </div>
 
                 {% unless product.has_only_default_variant %}
-                    {% form 'product',product %}
-                        <select name="id">
-                            {%  for variant in product.variants %}
-                                <option value="{{ variant.id }}" {% if variant = product.selected_or_first_available_variant %} selected {% endif %}>{{ variant.title }}</option>
-                            {% endfor %}
-                        </select>
-                        <input type="hidden" name="quantity" value="1">
+                  
+                      <custom-variant-picker class="product-content-variants" data-section-id="{{ section.id }}">
+                       {% for option in product.options_with_values %}
+                          <fieldset class="product-form_option">
+                            <legend class="product-form_option-name">
+                              {{ option.name }}
+                            </legend>
+                            <div class="product-form_option-values {% if option.name == 'Color' %} product-form_option-values--color {% endif %}">
+                               {% for value in option.values %}
+                                {% if option.name == 'Color' %}
+                                  <div class="product-form_option-value {% unless value.variant.available %} out-of-stock {% endunless %}" >
+                                    <input value="{{ value.variant.id }}" 
+                                      type="radio" id="{{ option.name }}-{{ value.name }}" 
+                                      name="{{ option.name }}" 
+                                      {% if option.selected_value == value %} checked {% endif %}>
+                                    <label for="{{ option.name }}-{{ value.name }}" class=" {% if option.name == 'Color' %} color-swatch-label {% endif %}" style="background-image:url({{ value.swatch.image | image_url:width:65 }})"></label>
+                                  </div>
+                                {% else %}
+                                  <div class="product-form_option-value {% unless value.variant.available %} out-of-stock {% endunless %}" >
+                                    <input value="{{ value.variant.id }}" 
+                                      type="radio" id="{{ option.name }}-{{ value.name }}" 
+                                      name="{{ option.name }}" 
+                                      {% if option.selected_value == value %} checked {% endif %}>
+                                    <label for="{{ option.name }}-{{ value.name }}">{{  value.name }}</label>
+                                  </div>
+                                {% endif %}
+                               {% endfor %}
+                            </div>
+                          </fieldset>
+                       {% endfor %}
+                      </custom-variant-picker>
+                {% endunless %}
+                       
+                {% form 'product',product %}
+                  <div class="custom-quantity-box">
+                    <span class="custom-quantity">
+                       Quantity
+                    </span>
+                    <select class="custom-quantity-select" name="quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                  </div>
+                  {% comment %} <input type="hidden" name="quantity" value="1"> {% endcomment %}
+                        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                        
                         <button type="submit"  
                             class="add-to-cart_btn"
                             {% unless product.selected_or_first_available_variant.available %}
@@ -39,9 +86,22 @@
                                 Sold Out
                             {% endif %}
                         </button>
-                    {% endform %}
-                {% endunless %}
+                {% endform %}
+
+
+                <div class="checkpincode">
+                  <input type="text" name="pincode" id="checkpin" placeholder="Enter Pincode">
+                  <button class="check-btn">Check</button>
+                </div>
+            
               </div>
         </div>
     </div>
 </section>
+<script data-zipcode={{ shop.metaobjects.zipcode_availability.values | json }}> </script>
+<script>
+  
+  const checkpincode = ()=>{
+    const zipcode = document.querySelector('#checkpin').value
+  } 
+</script>
